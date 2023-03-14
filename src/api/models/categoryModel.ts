@@ -2,6 +2,7 @@ import promisePool from '../../database/db';
 import {Category, GetCategory, PostCategory} from '../../interfaces/Category';
 import {ResultSetHeader} from 'mysql2';
 import CustomError from '../../classes/CustomError';
+import {categoryListGet} from '../controllers/categoryController';
 
 const getAllCategories = async () => {
   const [rows] = await promisePool.execute<GetCategory[]>(
@@ -25,6 +26,8 @@ const getCategoryById = async (id: number) => {
 };
 
 const addCategory = async (category: PostCategory) => {
+  console.log('cat', category);
+
   const [headers] = await promisePool.execute<ResultSetHeader>(
     'INSERT INTO categories (category_name) VALUES (?)',
     [category.category_name]
