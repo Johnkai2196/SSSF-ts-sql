@@ -14,7 +14,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', (_req: Request, res: Response) => {
   res.json({
     message: 'API location: api/v1',
   });
