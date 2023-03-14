@@ -7,4 +7,6 @@ interface Category {
 
 interface GetCategory extends RowDataPacket, Category {}
 
-export {Category, GetCategory};
+type PostCategory = Omit<Category, 'category_id'>;
+
+export {Category, GetCategory, PostCategory};
