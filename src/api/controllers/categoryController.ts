@@ -48,7 +48,6 @@ const categoryPost = async (
   next: NextFunction
 ) => {
   try {
-    console.log('täällä');
     const errors = validationResult(req);
     console.log(errors);
     if (!errors.isEmpty()) {

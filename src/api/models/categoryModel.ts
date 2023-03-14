@@ -26,8 +26,6 @@ const getCategoryById = async (id: number) => {
 };
 
 const addCategory = async (category: PostCategory) => {
-  console.log('cat', category);
-
   const [headers] = await promisePool.execute<ResultSetHeader>(
     'INSERT INTO categories (category_name) VALUES (?)',
     [category.category_name]
