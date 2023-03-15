@@ -1,6 +1,14 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
-import {getApiRoot, getCategories, postCategory} from './testCategory';
+import {
+  deleteCategory,
+  getApiRoot,
+  getCategories,
+  getCategory,
+  postCategory,
+  putCategory,
+} from './testCategory';
 import {Category} from '../src/interfaces/Category';
+import MessageResponse from '../src/interfaces/MessageResponse';
 
 // import app from '../src/app';
 const app = 'http://localhost:3000';
@@ -12,21 +20,34 @@ describe('GET /api/v1', () => {
   });
 
   // test successful category routes
+
+  // TODO:  add test for get all categories
   let categories: Category[];
   it('Should get array of categories', async () => {
     categories = await getCategories(app);
   });
 
   // TODO: add test for get category by id
+  it('Should get a category by id', async () => {
+    await getCategory(app, categories[0].category_id);
+  });
   // TODO: add test for post category
+  let newCategory: MessageResponse;
   it('should post a category', async () => {
     const category_name = 'test category';
-    await postCategory(app, category_name);
+    newCategory = await postCategory(app, category_name);
   });
   // TODO: add test for put category
+  it('should put a category', async () => {
+    const category_name = 'i have change';
+    await putCategory(app, newCategory.id || 0, category_name);
+  });
   // TODO: add test for delete category
+  it('should delete a category', async () => {
+    await deleteCategory(app, newCategory.id || 0);
+  });
 
-  // test succesful species routes
+  // test successful species routes
   // TODO: add test for get all species
   // TODO: add test for get species by id
   // TODO: add test for post species

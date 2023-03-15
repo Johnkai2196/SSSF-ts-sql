@@ -4,6 +4,8 @@ import {
   getAllCategories,
   getCategoryById,
   addCategory,
+  updateCategory,
+  deleteCategory,
 } from '../models/categoryModel';
 import CustomError from '../../classes/CustomError';
 import MessageResponse from '../../interfaces/MessageResponse';
@@ -67,4 +69,62 @@ const categoryPost = async (
     next(error);
   }
 };
-export {categoryListGet, categoryGet, categoryPost};
+const categoryPut = async (
+  req: Request<{id: string}, {}, PostCategory>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      const message = errors
+        .array()
+        .map((error) => `${error.msg}: ${error.param}`)
+        .join(', ');
+      throw new CustomError(message, 400);
+    }
+    const id = parseInt(req.params.id);
+    const category = await updateCategory(id, req.body);
+    const message: MessageResponse = {
+      message: `Category ${category} updated`,
+      id,
+    };
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+const categoryDelete = async (
+  req: Request<{id: number}, {}, {}>,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const errors = validationResult(req);
+    console.log(errors);
+    if (!errors.isEmpty()) {
+      const message = errors
+        .array()
+        .map((error) => `${error.msg}: ${error.param}`)
+        .join(', ');
+      throw new CustomError(message, 400);
+    }
+    const category = await deleteCategory(req.params.id);
+    const message: MessageResponse = {
+      message: `Category ${category} deleted`,
+      id: req.params.id,
+    };
+    res.json(message);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export {
+  categoryListGet,
+  categoryGet,
+  categoryPost,
+  categoryPut,
+  categoryDelete,
+};

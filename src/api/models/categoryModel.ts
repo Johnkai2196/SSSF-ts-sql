@@ -36,4 +36,36 @@ const addCategory = async (category: PostCategory) => {
   return headers.insertId;
 };
 
-export {getAllCategories, getCategoryById, addCategory};
+const updateCategory = async (
+  id: number,
+  category: PostCategory
+): Promise<boolean> => {
+  console.log(category);
+  const [headers] = await promisePool.execute<ResultSetHeader>(
+    'UPDATE categories SET category_name = ? WHERE category_id = ?',
+    [category.category_name, id]
+  );
+  if (headers.affectedRows === 0) {
+    throw new CustomError('Category not found', 404);
+  }
+  return true;
+};
+
+const deleteCategory = async (id: number): Promise<boolean> => {
+  const [headers] = await promisePool.execute<ResultSetHeader>(
+    'DELETE FROM categories WHERE category_id = ?',
+    [id]
+  );
+  if (headers.affectedRows === 0) {
+    throw new CustomError('Category not found', 404);
+  }
+  return true;
+};
+
+export {
+  getAllCategories,
+  getCategoryById,
+  addCategory,
+  updateCategory,
+  deleteCategory,
+};
