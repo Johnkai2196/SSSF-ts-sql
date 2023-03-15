@@ -8,13 +8,18 @@ import {
   speciesPost,
   speciesPut,
 } from '../controllers/speciesController';
+import {getImageFromWiki} from '../../middlewares';
 
 const router = express.Router();
 
 router
   .route('/')
   .get(speciesListGet)
-  .post(body('species_name').notEmpty().isString().escape(), speciesPost);
+  .post(
+    body('species_name').notEmpty().isString().escape(),
+    getImageFromWiki,
+    speciesPost
+  );
 
 router
   .route('/:id')
